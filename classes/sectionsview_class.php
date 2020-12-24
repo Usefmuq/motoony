@@ -30,7 +30,7 @@ class SectionsView extends Sections {
             }
             echo '<div class="card">
             <div class="card-body">
-              <h4 class="card-title"><a href="sections.php?id='.$row ["section_id"].'">'.$row ["section_name"].'</a></h4>';
+              <h4 class="card-title"><a href="content.php?id='.$row ["section_id"].'">'.$row ["section_name"].'</a></h4>';
               // delete and edit
               if ($this->is_authorized()){
                 echo '<ul class="list-inline m-0"style="font-family: "FontAwesome";">

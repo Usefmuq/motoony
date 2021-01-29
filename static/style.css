@@ -1,0 +1,11 @@
+.list-group{
+    width: 350px;
+    position: fixed;
+    right: 0;
+  }
+
+  .scrollspy-content{
+    overflow-y: scroll;  
+    position: relative;
+    height: 300px;
+}

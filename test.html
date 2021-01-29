@@ -1,26 +1,24 @@
-<div class="row">
-    <div class="col-8">
+<form id="searchForm" action="javascript:search();">
+    <button id="go" class="btn btn-link" type="button"
+        onclick="document.getElementById('searchForm').submit(); return false;">
+    </button>
+    <input type="hidden" id="searchItem" value="">
+</form>
+<p></p>
+<td><a href="content.php?id='.$row [" case_section"].'&case='.$row ["case_id"].'">'.$row [" case_name"].'</a></td>
 
-    </div>
-    <div class="col-4">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>case</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+<form id="searchForm" action="javascript:search();">
+    <button id="go" class="btn btn-link" type="button" onclick="document.getElementById(" searchForm").submit(); return
+        false;">
+        '.$row ["case_name"].'
+    </button>
+    <input type="hidden" id="searchItem" value="'.$row [" case_description"].'">
+</form>
 
-</div>
+
+<form id=f1 name="f1" action="" onSubmit="if(this.t1.value!=null && this.t1.value!="")
+findString(this.t1.value);return false">
+    <button class="btn btn-link" type="submit" name="id" value="'.$row [" case_section"].'">'.$row
+        ["case_name"].'</button>
+    <input type="hidden" id="t1" name=t1 value="'.$row [" case_description"].'">
+</form>

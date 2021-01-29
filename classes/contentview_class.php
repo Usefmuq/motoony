@@ -19,34 +19,35 @@ class ContentView extends Content {
         $content_result = $this->get_content($_GET['id']);
         $cases_result = $this->get_cases($_GET['id']);
 
-        foreach ($content_result as $row){
-            echo '<div class="row">
-            <div class="col-8">
-                '.$row ["content_content"].'
-            </div>
-            <div class="col-4">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>case</th>
-                        </tr>
-                    </thead>
-                    <tbody>';
-                    foreach ($cases_result as $row){
-                        echo '<tr>
-                            <td>'.$row ["case_id"].'</td>
-                            <td><a href="content.php?id='.$row ["case_section"].'&case='.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
-                        </tr>';
-                    }
-                        
-                    echo '</tbody>
-                </table>
-            </div>
-        
-        </div>';
-
-        }
+            echo '
+            <div class="overflow-auto p-3 bg-light" style="max-height: 300px;">
+            <table class="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Case Name</th>
+                <th>Go</th>
+                <th>Case link</th>
+              </tr>
+            </thead>
+            <tbody>';
+            foreach ($cases_result as $row){
+                echo '
+              <tr>
+                <td>'.$row ["case_id"].'</td>
+                <td><a href="#case-'.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
+                <td><button type="button" class="btn btn-warning" onclick="case_search(\'cupidatat nulla elit cupidatat\')">عرض</button></td>
+                <td><button type="button" class="btn btn-info">الشرح والتعليقات</button></td></td>
+              </tr>';
+            }
+            echo '</tbody>
+            </table>
+            </div>';
+            foreach ($content_result as $row){
+            echo '<p id="case-'.$row ["content_case"].'">'.$row ["content_content"].'</p>';
+            }
+            echo '';
     }
 
 }
+//'.$row ["content_content"].'

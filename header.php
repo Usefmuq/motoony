@@ -45,7 +45,12 @@
         
 
         <?php
-            nav_form();
+            $Sign_obj = new SignView();
+            $Sign_obj->nav_form();
+            if (isset($_POST['sign_in_submit'])) {
+                $Sign_obj = new SignContr();
+                $Sign_obj->sign_in();
+            }
         ?>
     </div>
 </nav>

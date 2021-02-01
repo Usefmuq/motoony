@@ -45,12 +45,21 @@
         
 
         <?php
+            //This turns on PHP's output buffering feature.
+            ob_start();
             $Sign_obj = new SignView();
             $Sign_obj->nav_form();
             if (isset($_POST['sign_in_submit'])) {
-                $Sign_obj = new SignContr();
-                $Sign_obj->sign_in();
+                $Sign_contr = new SignContr();
+                $Sign_contr->sign_in();
             }
+            if (isset($_POST['sign_out_submit'])) {
+                $Sign_contr = new SignContr();
+                $Sign_contr->sign_out();
+            }
+            // if (isset($_POST['sign_up_nav'])) {
+            //     header("Location: sign.php");
+            // }
         ?>
     </div>
 </nav>

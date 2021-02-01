@@ -10,7 +10,7 @@ class Sign extends Dbh {
         if(!$stmt){
             $_SESSION['message']='SQL Error';
             $_SESSION['msg_type']='danger';
-            header("Location: ../index.php");
+            header("Location: sign.php");
             exit();
         }
         if ($row = $stmt->fetch()){
@@ -30,7 +30,7 @@ class Sign extends Dbh {
             else {
                 $_SESSION['message']='Wrong name or pass';
                 $_SESSION['msg_type']='danger';
-                header("Location: index.php");
+                header("Location: sign.php");
                 exit();
                 return false;
             }
@@ -39,11 +39,61 @@ class Sign extends Dbh {
         else{
             $_SESSION['message']='Wrong name or pass';
             $_SESSION['msg_type']='danger';
-            header("Location: index.php");
+            header("Location: sign.php");
             exit();
             return false;
         }
         
     }
+
+    protected function is_username_taken($user_name)
+    {
+        $sql = "SELECT * FROM users WHERE user_name=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$user_name]);
+        if(!$stmt){
+            header("Location: ../index.php?sign=sql");
+            exit();
+        }
+        $result = $stmt->fetch();
+        if ($result){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    protected function is_email_taken($user_email)
+    {
+        $sql = "SELECT * FROM users WHERE user_email=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$user_email]);
+        if(!$stmt){
+            header("Location: ../index.php?sign=sql");
+            exit();
+        }
+        $result = $stmt->fetch();
+        if ($result){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    protected function sign_up_user($user_name, $user_email, $user_nickname, $user_pass, $user_country, $user_ip)
+    {
+        $sql = "INSERT INTO users(user_name, user_email, user_nickname, user_pass, user_country, user_ip) VALUES(?,?,?,?,?,?);";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$user_name, $user_email, $user_nickname, $user_pass, $user_country, $user_ip]);
+        if(!$stmt){
+            header("Location: ../index.php?sign=sql");
+            exit();
+        }
+        $_SESSION['message']='User has been signed up';
+        $_SESSION['msg_type']='success';
+        header("Location: index.php");
+        exit();
+    }
+
 
 }

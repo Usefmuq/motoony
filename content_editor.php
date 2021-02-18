@@ -17,6 +17,19 @@
 // $Content_cont->job_check();
 $Content_obj = new ContentView();
 $Content_obj->show_editor();
+if (isset($_POST['content_edit'])) {
+    $Sign_contr = new ContentContr();
+    $Sign_contr->content_edit();
+}
+if (isset($_POST['add_content'])) {
+    $Sign_contr = new ContentContr();
+    $Sign_contr->add_content();
+}
+if (isset($_POST['delete_content'])) {
+    $Sign_contr = new ContentContr();
+    $Sign_contr->delete_request();
+}
+
 ?>
 </div>
 
@@ -24,53 +37,3 @@ $Content_obj->show_editor();
 <?php
     include 'footer.php';
 ?>
-<script type="text/javascript" src="js/hilitor.js"></script>
-<script type="text/javascript">
-    var TRange=null;
-
-    function case_search(str) {
-        if (parseInt(navigator.appVersion)<4) return;
-        var strFound;
-        if (window.find) {
-            // CODE FOR BROWSERS THAT SUPPORT window.find
-            strFound=self.find(str);
-            if (!strFound) {
-                strFound=self.find(str,0,1);
-                while (self.find(str,0,1)) continue;
-            }
-        }
-        else if (navigator.appName.indexOf("Microsoft")!=-1) {
-            // EXPLORER-SPECIFIC CODE 
-            if (TRange!=null) {
-                TRange.collapse(false);
-                strFound=TRange.findText(str);
-                if (strFound) {
-                    TRange.select();
-                    // TRange.replace(str,`<span style="background-color: yellow">${str}</span>`);
-                    var editor = document.getElementById('content');
-                    var content = editor.innerHTML;
-                    editor.innerHTML = content.replace(str, '<span style="color:red">var</span>;');
-
-
-                }
-            }
-            if (TRange==null || strFound==0) {
-                TRange=self.document.body.createTextRange();
-                strFound=TRange.findText(str);
-                if (strFound) {
-                    TRange.select();
-                    // TRange.replace(str,'`<span style="background-color: yellow">${str}</span>`');
-                    var editor = document.getElementById('content');
-                    var content = editor.innerHTML;
-                    editor.innerHTML = content.replace(str, 'ss');
-                }
-            }
-        }
-        else if (navigator.appName=="Opera") {
-            alert ("Opera browsers not supported, sorry...")
-            return;
-        }
-        if (!strFound) alert ("String '"+str+"' not found!")
-        return;
-}
-</script>

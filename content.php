@@ -16,7 +16,7 @@
 // $Content_cont = new ContentContr();
 // $Content_cont->job_check();
 $Content_obj = new ContentView();
-$Content_obj->add_button();
+$Content_obj->edit_button();
 $Content_obj->show_content();
 ?>
 </div>

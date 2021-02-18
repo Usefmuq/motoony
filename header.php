@@ -47,6 +47,8 @@
         <?php
             //This turns on PHP's output buffering feature.
             ob_start();
+            // override function to change memory limit locally
+            // ini_set('memory_limit','1072M');
             $Sign_obj = new SignView();
             $Sign_obj->nav_form();
             if (isset($_POST['sign_in_submit'])) {

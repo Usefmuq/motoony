@@ -16,14 +16,14 @@ class Content extends Dbh {
         $stmt->execute([$case_section]);
         return $stmt->fetchAll();
     }
-    protected function set_content($content_subject, $content_section , $content_sayer, $content_by, $content_content, $content_source)
+    protected function set_content($content_section , $content_sayer, $content_by, $content_content,$content_case, $content_case_description, $content_source)
     {
-        $sql = "INSERT INTO content(content_subject, content_section, content_sayer, content_by, content_content, content_source) VALUES(?,?,?,?,?,?);";
+        $sql = "INSERT INTO content(content_section, content_sayer, content_by, content_content,content_case,content_case_description, content_source) VALUES(?,?,?,?,?,?,?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$content_subject, $content_section , $content_sayer, $content_by, $content_content, $content_source]);
+        $stmt->execute([$content_section , $content_sayer, $content_by, $content_content,$content_case, $content_case_description, $content_source]);
         $_SESSION['message']='content has been Added';
         $_SESSION['msg_type']='success';
-        header("Location: sections.php?id=".$content_section);
+        header("Location: content_editor.php?id=".$_GET['id']);
         exit();
     }
     protected function delete_content($content_id)
@@ -33,17 +33,17 @@ class Content extends Dbh {
         $stmt->execute([$content_id]);
         $_SESSION['message']='content has been deleted';
         $_SESSION['msg_type']='danger';
-        header("Location: sections.php?id=".$_GET['section_cat']);
+        header("Location: content_editor.php?id=".$_GET['id']);
         exit();
     }
-    protected function edit_content($content_id,$content_subject, $content_sayer, $content_by, $content_content, $content_source)
+    protected function edit_content($content_sayer, $content_content,$content_case, $content_case_description, $content_source)
     {
-        $sql = "UPDATE content SET content_subject=?,content_sayer=?,content_by=?,content_content=?,content_source=? WHERE content_id=?;";
+        $sql = "UPDATE content SET content_sayer=?,content_content=?,content_case=? ,content_case_description=?,content_source=? WHERE content_id=?;";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$content_id,$content_subject, $content_sayer, $content_by, $content_content, $content_source]) or die('aaa');
-        $_SESSION['message']='section has been updated';
+        $result = $stmt->execute([$content_sayer, $content_content,$content_case, $content_case_description, $content_source]) or die('aaa');
+        $_SESSION['message']='content has been updated '.$result;
         $_SESSION['msg_type']='success';
-        header("Location: sections.php");
+        header("Location: content_editor.php?id=".$_GET['id']);
         exit();
     }
 

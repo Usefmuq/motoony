@@ -113,7 +113,7 @@ class ContentView extends Content {
           <li class="list-inline-item">
           <form method="POST" action="">
             <input type="hidden" name="content_id" value="'.$row["content_id"].'">
-            <button type="button" class="btn btn-danger btn-sm rounded-0" name ="delete_content">
+            <button type="submit" class="btn btn-danger btn-sm rounded-0" name ="delete_content">
               <i class="fa fa-trash"></i>
             </button>
           </form>

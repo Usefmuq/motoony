@@ -13,11 +13,23 @@
 <div class="my-4 container">
 <?php
 // show_books();
-$books_cont = new BooksContr();
-$books_cont->job_check();
 $books_obj = new BooksView();
 $books_obj->add_button();
 $books_obj->show_books();
+
+if (isset($_POST['add_book'])) {
+    $Sign_contr = new BooksContr();
+    $Sign_contr->add_book();
+}
+if (isset($_POST['edit_book'])) {
+    $Sign_contr = new BooksContr();
+    $Sign_contr->call_edit();
+}
+if (isset($_POST['delete_book'])) {
+    $Sign_contr = new BooksContr();
+    $Sign_contr->delete_request();
+}
+
 ?>
 </div>
 <!-- end code -->

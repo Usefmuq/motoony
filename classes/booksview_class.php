@@ -13,7 +13,31 @@ class BooksView extends Books {
     public function add_button()
     {
       if ($this->is_authorized()){
-        echo '<a href="submit.php?add_book=true" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-plus"></i> ADD BOOK</a>';
+        echo '<button type="button" class="btn btn-success btn-sm rounded-0" data-toggle="modal" data-target="#add_book">
+        <i class="fa fa-plus"></i>              
+      </button>
+      <div class="modal" id="add_book" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredAddBook" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalCenteredAddBook">ADD book</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+              <input type="text" class="form-control mb-2 mr-sm-2" name="book_name" placeholder="Book name...">
+              <textarea class="form-control mb-2 mr-sm-2" name="book_description" rows="4" placeholder="Book description..."></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name= "add_book">Save changes</button>
+              </form>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>';
       }
     }
 
@@ -35,10 +59,40 @@ class BooksView extends Books {
               if ($this->is_authorized()){
                 echo '<ul class="list-inline m-0"style="font-family: "FontAwesome";">
                 <li class="list-inline-item">
-                    <a href="index.php?edit_book='.$row["book_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                <button type="button" class="btn btn-info btn-sm rounded-0" data-toggle="modal" data-target="#edit_book'.$row["book_id"].'">
+                <i class="fa fa-edit"></i>              
+                </button>
+                <div class="modal" id="edit_book'.$row["book_id"].'" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredEditBook'.$row["book_id"].'" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="ModalCenteredEditBook'.$row["book_id"].'">Edit Book</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form method="POST" action="">
+                        <input type="hidden" name="book_id" value="'.$row["book_id"].'">
+                        <input type="text" class="form-control mb-2 mr-sm-2" name="book_name" value="'.$row["book_name"].'">
+                        <textarea class="form-control mb-2 mr-sm-2" name="book_description" rows="4">'.$row["book_description"].'</textarea>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" name= "edit_book">Save changes</button>
+                        </form>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>                
                 </li>
                 <li class="list-inline-item">
-                    <a href="index.php?delete_book='.$row["book_id"].'" class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" onclick="return confirm(\'Are you sure you want to delete?\')" title="Delete"><i class="fa fa-trash"></i></a>
+                  <form method="POST" action="">
+                  <input type="hidden" name="book_id" value="'.$row["book_id"].'">
+                  <button type="submit" class="btn btn-danger btn-sm rounded-0" name ="delete_book" onclick="return confirm(\'Are you sure you want to delete?\')">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                  </form>
                 </li>
                 </ul>';
             }

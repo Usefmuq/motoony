@@ -40,10 +40,10 @@ class Sections extends Dbh {
     {
         $sql = "INSERT INTO sections(section_name, section_cat, section_description) VALUES(?,?,?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$section_name, $section_cat, $section_description]);
+        $stmt->execute([$section_name, $section_cat, $section_description]) or die('error 101');
         $_SESSION['message']='section has been Added';
         $_SESSION['msg_type']='success';
-        header("Location: sections.php?id=".$section_cat);
+        header("Location: sections.php?id=".$_GET['id']);
         exit();
     }
 
@@ -54,7 +54,7 @@ class Sections extends Dbh {
         $stmt->execute([$section_id]);
         $_SESSION['message']='section has been deleted';
         $_SESSION['msg_type']='danger';
-        header("Location: sections.php?id=".$_GET['section_cat']);
+        header("Location: sections.php?id=".$_GET['id']);
         exit();
     }
     protected function edit_section($section_id,$section_name, $section_description)
@@ -64,7 +64,7 @@ class Sections extends Dbh {
         $stmt->execute([$section_name, $section_description,$section_id]) or die('aaa');
         $_SESSION['message']='section has been updated';
         $_SESSION['msg_type']='success';
-        header("Location: sections.php");
+        header("Location: sections.php?id=".$_GET['id']);
         exit();
     }
 

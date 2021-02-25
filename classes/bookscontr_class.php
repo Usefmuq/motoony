@@ -15,14 +15,14 @@ class BooksContr extends Books {
         if(empty($book_name) or empty($book_description)){
             $_SESSION['message']='Something is empty!';
             $_SESSION['msg_type']='danger';
-            header("Location: submit.php?add_book=true");
+            header("Location: index.php");
             exit();
             return false;
         }
         if(strlen($book_description) > 255 or strlen($book_name) > 255){
             $_SESSION['message']='Book name and description should be less than 255 character!';
             $_SESSION['msg_type']='danger';
-            header("Location: submit.php?add_book=true");
+            header("Location: index.php");
             exit();
             return false;
         }
@@ -30,7 +30,7 @@ class BooksContr extends Books {
         if($result_check){
             $_SESSION['message']='Book name has been taken!';
             $_SESSION['msg_type']='danger';
-            header("Location: submit.php?add_book=true");
+            header("Location: index.php");
             exit();
             return false;
         }
@@ -38,43 +38,52 @@ class BooksContr extends Books {
         return true;
     }
 
-    public function job_check()
-    {
-        if ($this->is_authorized()){
-            if(isset($_GET['edit_book'])){
-                $book_id = $_GET['edit_book'];
-                $result_check = $this->find_book_id($book_id);
-                if(!$result_check){
-                    $_SESSION['message']='Book was not found!';
-                    $_SESSION['msg_type']='danger';
-                    header("Location: index.php");
-                    exit();
-                }        
-                else {
-                    header('Location: submit.php?update_book='.$result_check["book_id"].'&book_name='.$result_check["book_name"].'&book_description='.$result_check["book_description"]);
-                }
-            }
-            if(isset($_GET['delete_book'])){
-                $book_id = $_GET['delete_book'];
-                $result_check = $this->find_book_id($book_id);
-                if(!$result_check){
-                    $_SESSION['message']='Book was not found!';
-                    $_SESSION['msg_type']='danger';
-                    header("Location: index.php");
-                    exit();
-                }        
-                else {
-                    $this->delete_book($book_id);
-                }
-            }
-        }
-    }
+    // public function job_check()
+    // {
+    //     if ($this->is_authorized()){
+    //         if(isset($_GET['edit_book'])){
+    //             $book_id = $_GET['edit_book'];
+    //             $result_check = $this->find_book_id($book_id);
+    //             if(!$result_check){
+    //                 $_SESSION['message']='Book was not found!';
+    //                 $_SESSION['msg_type']='danger';
+    //                 header("Location: index.php");
+    //                 exit();
+    //             }        
+    //             else {
+    //                 header('Location: submit.php?update_book='.$result_check["book_id"].'&book_name='.$result_check["book_name"].'&book_description='.$result_check["book_description"]);
+    //             }
+    //         }
+    //         if(isset($_GET['delete_book'])){
+    //             $book_id = $_GET['delete_book'];
+    //             $result_check = $this->find_book_id($book_id);
+    //             if(!$result_check){
+    //                 $_SESSION['message']='Book was not found!';
+    //                 $_SESSION['msg_type']='danger';
+    //                 header("Location: index.php");
+    //                 exit();
+    //             }        
+    //             else {
+    //                 $this->delete_book($book_id);
+    //             }
+    //         }
+    //     }
+    // }
 
-    public function call_edit($book_id, $book_name, $book_description)
+    public function call_edit()
     {
         if ($this->is_authorized()){
-            $result = $this->edit_book($book_id,$book_name, $book_description);
-            return $result;
+            if(!isset($_POST['edit_book'])){
+                $_SESSION['message']='submit error';
+                $_SESSION['msg_type']='danger';
+                header("Location: index.php");
+                exit();
+            }
+            else {
+                if ($this->conditions($_POST['book_name'], $_POST['book_description'])){
+                    $this->edit_book($_POST['book_id'],$_POST['book_name'], $_POST['book_description']);
+                }
+            }
         }
     }
 
@@ -87,14 +96,18 @@ class BooksContr extends Books {
             exit();
             }
         else {
-            $book_name = $_POST['book_name'];
-            $book_description = $_POST['book_description'];
-            if ($this->conditions($book_name, $book_description)){
-                $stmt = $this->set_book($book_name, $book_description);
-                
+            if ($this->conditions($_POST['book_name'], $_POST['book_description'])){
+                $this->set_book($_POST['book_name'], $_POST['book_description']);
             }
         }        
 
     }
+    
+    public function delete_request()
+    {
+      if ($this->is_authorized()) {
+        $this->delete_book($_POST['book_id']);
+      }
+    }  
 
 }

@@ -13,7 +13,32 @@ class SectionsView extends Sections {
     public function add_button()
     {
       if ($this->is_authorized()){
-        echo '<a href="submit.php?add_section=true&section_cat='.$_GET['id'].'" class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-plus"></i> ADD SECTION</a>';
+        echo '<button type="button" class="btn btn-success btn-sm rounded-0" data-toggle="modal" data-target="#add_section">
+        <i class="fa fa-plus"></i>              
+      </button>
+      <div class="modal" id="add_section" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredAddSection" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalCenteredAddSection">ADD section</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+              <input type="hidden" name="section_cat" value="'.$_GET["id"].'">
+              <input type="text" class="form-control mb-2 mr-sm-2" name="section_name" placeholder="section name...">
+              <textarea class="form-control mb-2 mr-sm-2" name="section_description" rows="4" placeholder="section description..."></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name= "add_section">Save changes</button>
+              </form>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>';
       }
     }
 
@@ -35,10 +60,40 @@ class SectionsView extends Sections {
               if ($this->is_authorized()){
                 echo '<ul class="list-inline m-0"style="font-family: "FontAwesome";">
                 <li class="list-inline-item">
-                    <a href="sections.php?edit_section='.$row["section_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></a>
+                  <button type="button" class="btn btn-info btn-sm rounded-0" data-toggle="modal" data-target="#edit_section'.$row["section_id"].'">
+                  <i class="fa fa-edit"></i>              
+                  </button>
+                  <div class="modal" id="edit_section'.$row["section_id"].'" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredEditSection'.$row["section_id"].'" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="ModalCenteredEditSection'.$row["section_id"].'">Edit Section</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form method="POST" action="">
+                          <input type="hidden" name="section_id" value="'.$row["section_id"].'">
+                          <input type="text" class="form-control mb-2 mr-sm-2" name="section_name" value="'.$row["section_name"].'">
+                          <textarea class="form-control mb-2 mr-sm-2" name="section_description" rows="4">'.$row["section_description"].'</textarea>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="submit" class="btn btn-primary" name= "edit_section">Save changes</button>
+                          </form>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </li>
                 <li class="list-inline-item">
-                    <a href="sections.php?delete_section='.$row["section_id"].'&section_cat='.$row["section_cat"].'" class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" onclick="return confirm(\'Are you sure you want to delete?\')" title="Delete"><i class="fa fa-trash"></i></a>
+                  <form method="POST" action="">
+                    <input type="hidden" name="section_id" value="'.$row["section_id"].'">
+                    <button type="submit" class="btn btn-danger btn-sm rounded-0" name ="delete_section" onclick="return confirm(\'Are you sure you want to delete?\')">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </form>
                 </li>
                 </ul>';
             }

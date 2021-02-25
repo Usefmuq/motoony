@@ -20,7 +20,7 @@ class Content extends Dbh {
     {
         $sql = "INSERT INTO content(content_section, content_sayer, content_by, content_content,content_case,content_case_description, content_source) VALUES(?,?,?,?,?,?,?);";
         $stmt = $this->connect()->prepare($sql);
-        $stmt->execute([$content_section , $content_sayer, $content_by, $content_content,$content_case, $content_case_description, $content_source]);
+        $stmt->execute([$content_section , $content_sayer, $content_by, $content_content,$content_case, $content_case_description, $content_source]) or die('error');
         $_SESSION['message']='content has been Added';
         $_SESSION['msg_type']='success';
         header("Location: content_editor.php?id=".$_GET['id']);
@@ -36,11 +36,11 @@ class Content extends Dbh {
         header("Location: content_editor.php?id=".$_GET['id']);
         exit();
     }
-    protected function edit_content($content_sayer, $content_content,$content_case, $content_case_description, $content_source)
+    protected function edit_content($content_sayer, $content_content,$content_case, $content_case_description, $content_source, $content_id)
     {
         $sql = "UPDATE content SET content_sayer=?,content_content=?,content_case=? ,content_case_description=?,content_source=? WHERE content_id=?;";
         $stmt = $this->connect()->prepare($sql);
-        $result = $stmt->execute([$content_sayer, $content_content,$content_case, $content_case_description, $content_source]) or die('aaa');
+        $result = $stmt->execute([$content_sayer, $content_content,$content_case, $content_case_description, $content_source, $content_id]) or die('aaa');
         $_SESSION['message']='content has been updated '.$result;
         $_SESSION['msg_type']='success';
         header("Location: content_editor.php?id=".$_GET['id']);

@@ -133,18 +133,21 @@ class ContentView extends Content {
                   <input type="hidden" name="content_section" value="'.$_GET["id"].'">
                   <input type="hidden" name="content_id" value="'.$row["content_id"].'">
                   <input type="hidden" name="content_by" value="'.$_SESSION['userid'].'">
-                  <p>case</p>
-                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_subject" value="'.$row ["content_case"].'">
-                  <hr>
                   <p>content sayer</p>
-                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_sayer" value="'.$row ["content_sayer"].'">
-                  <hr>
-                  <p>content source</p>
-                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_source" value="'.$row ["content_source"].'">
+                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_sayer" value="'.$row["content_sayer"].'">
                   <hr>
                   <p>content</p>
-                  <textarea class="form-control mb-2 mr-sm-2" name="content_content" rows="4">'.$row ["content_content"].'</textarea>
-                </div>
+                  <textarea class="form-control mb-2 mr-sm-2" name="content_content" rows="4">'.$row["content_content"].'</textarea>
+                  <hr>
+                  <p>case</p>
+                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_case" value="'.$row["content_case"].'">
+                  <hr>
+                  <p>case description</p>
+                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_case_description" value="'.$row["content_case_description"].'">
+                  <hr>
+                  <p>content source</p>
+                  <input type="text" class="form-control mb-2 mr-sm-2" name="content_source" value="'.$row["content_source"].'">
+                  </div>
                 <div class="modal-footer">
                   <button type="submit" class="btn btn-primary" name= "content_edit">Save changes</button>
                   </form>
@@ -157,28 +160,15 @@ class ContentView extends Content {
           '.$row ["content_content"].'
           </div>
         <div class="card-body">
-          <table class="table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Case Name</th>
-              <th>Edit</th>
-            </tr>
-          </thead>
-          <tbody>';
-          foreach ($cases_result as $row){
-              echo '
-            <tr>
-              <td>'.$row ["case_id"].'</td>
-              <td><a href="#case-'.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
-              <td><button type="button" class="btn btn-warning" onclick="case_search(\'cupidatat nulla elit cupidatat\')">تعديل</button></td>
-            </tr>';
-          }
-          echo '</tbody>
-          </table>
-          </div>
-          </div>
-          <hr>';
+        <ul>
+          <li>CASE: '.$row ["content_case"].'</li>
+          <li>case description: '.$row ["content_case_description"].'</li>
+          <li>source: '.$row ["content_source"].'</li>
+          <li>date: '.$row ["content_date"].'</li>
+        </ul>
+        </div>
+        </div>
+        <hr>';
 
 
       }

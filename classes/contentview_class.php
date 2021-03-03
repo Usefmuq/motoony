@@ -11,7 +11,7 @@ class ContentView extends Content {
     public function add_button()
     {
       if ($this->is_authorized()){
-        echo '          
+        echo '
         <button type="button" class="btn btn-success btn-sm rounded-0" data-toggle="modal" data-target="#add_content">
           <i class="fa fa-plus"></i>              
         </button>
@@ -83,14 +83,14 @@ class ContentView extends Content {
                 <td>'.$row ["case_id"].'</td>
                 <td><a href="#case-'.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
                 <td><button type="button" class="btn btn-warning" onclick="case_search(\'cupidatat nulla elit cupidatat\')">عرض</button></td>
-                <td><button type="button" class="btn btn-info">الشرح والتعليقات</button></td></td>
+                <td><a href="case.php?id='.$row ["case_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Comments"><i class="fa fa-comment"></i>التعليقات</a></td>
               </tr>';
             }
             echo '</tbody>
             </table>
             </div> <p>';
             foreach ($content_result as $row){
-            echo ' '.$row ["content_content"];
+            echo ' '.$row ["content_content"].' <a href="case.php?id='.$row ["content_id"].'"><span class="fa fa-comment"></span></a>';
             }
             echo '</p>';
     }

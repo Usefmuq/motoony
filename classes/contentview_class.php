@@ -83,14 +83,14 @@ class ContentView extends Content {
                 <td>'.$row ["case_id"].'</td>
                 <td><a href="#case-'.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
                 <td><button type="button" class="btn btn-warning" onclick="case_search(\'cupidatat nulla elit cupidatat\')">عرض</button></td>
-                <td><a href="case.php?id='.$row ["case_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Comments"><i class="fa fa-comment"></i>التعليقات</a></td>
+                <td><a href="thread.php?id='.$row ["case_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Comments"><i class="fa fa-comment"></i>التعليقات</a></td>
               </tr>';
             }
             echo '</tbody>
             </table>
             </div> <p>';
             foreach ($content_result as $row){
-            echo ' '.$row ["content_content"].' <a href="case.php?id='.$row ["content_id"].'"><span class="fa fa-comment"></span></a>';
+            echo ' '.$row ["content_content"].' <a href="thread.php?id='.$row ["content_id"].'"><span class="fa fa-comment"></span></a>';
             }
             echo '</p>';
     }

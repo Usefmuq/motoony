@@ -25,7 +25,7 @@ class ThreadView extends Thread {
         
       echo '
       <div id="comment-'.$comment['comment_id'].'">
-      <div class="card mx-4 shadow-lg" style="border: none;">
+      <div class="card mx-4 shadow-sm" style="border: none;">
           <a href="#comment-'.$comment['comment_id'].'" class="comment-border-link">
               <span class="sr-only">Jump to comment-'.$comment['comment_id'].'</span>
           </a>
@@ -58,7 +58,7 @@ class ThreadView extends Thread {
   }  
 
   private function print_parent($comment, $depth = 0)
-  {     
+  {
       foreach ($comment as $c)  
       {  
           $this->format_comment($c, $depth);  
@@ -93,10 +93,6 @@ class ThreadView extends Thread {
           </div>
           </div>
           </div>";
-        }
-    for ($this->depth1; $this->depth1 > 0; $this->depth1--)
-        {  
-          // echo "</div></div></div></div>"; 
         }
       }  
   }  

@@ -63,7 +63,6 @@ class ContentView extends Content {
     public function show_content()
     {
         $content_result = $this->get_content($_GET['id']);
-        $cases_result = $this->get_cases($_GET['id']);
 
             echo '
             <div class="overflow-auto p-3 bg-light" style="max-height: 300px;">
@@ -77,13 +76,13 @@ class ContentView extends Content {
               </tr>
             </thead>
             <tbody>';
-            foreach ($cases_result as $row){
+            foreach ($content_result as $row){
                 echo '
               <tr>
-                <td>'.$row ["case_id"].'</td>
-                <td><a href="#case-'.$row ["case_id"].'">'.$row ["case_name"].'</a></td>
-                <td><button type="button" class="btn btn-warning" onclick="case_search(\'cupidatat nulla elit cupidatat\')">عرض</button></td>
-                <td><a href="thread.php?id='.$row ["case_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Comments"><i class="fa fa-comment"></i>التعليقات</a></td>
+                <td>'.$row ["content_id"].'</td>
+                <td><a href="#case-'.$row ["content_id"].'">'.$row ["content_case"].'</a></td>
+                <td><button type="button" class="btn btn-warning" onclick="case_search(\''.$row ["content_content"].'\')">عرض</button></td>
+                <td><a href="thread.php?id='.$row ["content_id"].'" class="btn btn-info btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Comments"><i class="fa fa-comment"></i>التعليقات</a></td>
               </tr>';
             }
             echo '</tbody>
@@ -98,7 +97,6 @@ class ContentView extends Content {
     {
       if ($this->is_authorized()) {
         $content_result = $this->get_content($_GET['id']);
-        $cases_result = $this->get_cases($_GET['id']);
         $this->add_button();
         foreach ($content_result as $row){
           echo '

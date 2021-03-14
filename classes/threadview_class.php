@@ -83,6 +83,37 @@ class ThreadView extends Thread {
       }
   }  
 
+  public function add_button()
+  {  
+      echo '
+      <button type="button" class="btn btn-success btn-sm rounded-0" data-toggle="modal" data-target="#add_comment">
+        <i class="fa fa-plus"></i>              
+      </button>
+      <div class="modal" id="add_comment" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredAddComment" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalCenteredAddComment">ADD comment</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+              <input type="hidden" name="comment_content_id" value="'.$_GET["id"].'">
+              <input type="hidden" name="comment_by" value="'.$_SESSION["userid"].'">
+              <textarea class="form-control mb-2 mr-sm-2" name="comment_body" rows="4" placeholder="comment body..."></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name= "add_comment">ADD COMMENT</button>
+              </form>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>';
+}  
+
   public function print_comments()
   {  
       foreach ($this->parents as $c)  

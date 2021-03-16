@@ -24,6 +24,16 @@ class Thread extends Dbh {
         header("Location: thread.php?id=".$_GET['id']);
         exit();
     }
+    protected function set_reply_comment($comment_body,$comment_by,$comment_parent)
+    {
+        $sql = "INSERT INTO comments(comment_body, comment_by, comment_parent) VALUES(?,?,?);";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$comment_body,$comment_by,$comment_parent]) or die('error');
+        $_SESSION['message']='comment reply has been Added';
+        $_SESSION['msg_type']='success';
+        header("Location: thread.php?id=".$_GET['id']);
+        exit();
+    }
     protected function delete_comment($comment_id)
     {
         $sql = "DELETE FROM comments WHERE comment_id=?;";

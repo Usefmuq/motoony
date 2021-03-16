@@ -15,6 +15,12 @@ class ThreadContr extends Thread {
       $this->set_comment($_POST['comment_body'],$_POST['comment_by']);
     }
   }
+  public function reply_comment()
+  {
+    if (isset($_SESSION['userid']) and isset($_POST['comment_body'])) {
+      $this->set_reply_comment($_POST['comment_body'],$_POST['comment_by'],$_POST['comment_parent']);
+    }
+  }
 
 
 }

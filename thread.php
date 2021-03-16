@@ -28,10 +28,8 @@
     // error_message();
 ?>
 </div>
-<div class="my-4 container">
+<div class="my-4 mx-4 flued-container">
 <?php
-
-
 $threaded_comments = new ThreadView();
 $threaded_comments->show_case();
 $threaded_comments->print_comments();
@@ -41,7 +39,10 @@ if (isset($_POST['add_comment'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->add_comment();
 }
-
+if (isset($_POST['reply_comment'])) {
+    $comment_contr = new ThreadContr();
+    $comment_contr->reply_comment();
+}
 ?>
 </div>
 

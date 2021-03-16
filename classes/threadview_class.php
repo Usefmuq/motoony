@@ -45,7 +45,10 @@ class ThreadView extends Thread {
                           <i class="fa fa-chevron-up"></i>
                           <span class="badge badge-pill badge-secondary">18</span>
                           <i class="fa fa-chevron-down"></i>
-                          <i class="fa fa-reply mx-5"> Reply</i>
+                            <button type="button" class="btn btn-success btn-sm rounded-0 mx-5" data-toggle="modal" data-target="#reply_comment-'.$comment['comment_id'].'">
+                            <i class="fa fa-reply"> Reply</i>              
+                            </button>
+                            '.$this->reply_button($comment['comment_id'], $comment['comment_body']).'
                           <i class="fa fa-star mx-4"> Favorite</i>
                       </li>
                   </ul>
@@ -67,21 +70,49 @@ class ThreadView extends Thread {
           {  
             $this->depth1 = $this->depth1 + 1;
             $this->print_parent($this->children[$c['comment_id']], $depth + 1);
+            echo "</div>
+            </div>
+            </div>
+            </div>";
           }
           else {
             echo "</div>
             </div>
             </div>
             </div>";
-            if (end($comment) == $c){
-              echo "</div>
-              </div>
-              </div>
-              </div>";
-            }
           }
       }
   }  
+
+  public function reply_button($comment_parent, $comment_body)
+  {  
+      echo '
+      <div class="modal" id="reply_comment-'.$comment_parent.'" tabindex="-1" role="dialog" aria-labelledby="ModalCenteredReplyComment" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalCenteredReplyComment">Reply comment</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form method="POST" action="">
+              <input type="hidden" name="comment_content_id" value="'.$_GET["id"].'">
+              <input type="hidden" name="comment_parent" value="'.$comment_parent.'">
+              <input type="hidden" name="comment_by" value="'.$_SESSION["userid"].'">
+              <p>#'.$comment_parent.' - '.$comment_body.'</p>
+              <textarea class="form-control mb-2 mr-sm-2" name="comment_body" rows="4" placeholder="comment body..."></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary" name= "reply_comment">Reply COMMENT</button>
+              </form>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+          </div>
+        </div>
+      </div>';
+}  
 
   public function add_button()
   {  
@@ -119,12 +150,6 @@ class ThreadView extends Thread {
       foreach ($this->parents as $c)  
       {  
         $this->print_parent($c);
-        if (end($this->parents) != $c){
-          echo "</div>
-          </div>
-          </div>
-          </div>";
-        }
       }  
   }  
 

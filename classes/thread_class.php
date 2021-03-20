@@ -14,6 +14,23 @@ class Thread extends Dbh {
         $stmt->execute();
         return $stmt->fetchAll();
     }
+    protected function get_posts($post_content_id)
+    {
+        $sql = "SELECT * FROM posts WHERE post_content_id=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$post_content_id]);
+        return $stmt->fetchAll();
+    }
+    protected function set_post($post_content_id,$post_by,$post_status,$post_title,$post_sayer,$post_source,$post_body)
+    {
+        $sql = "INSERT INTO posts(post_content_id,post_by,post_status,post_title,post_sayer,post_source,post_body) VALUES(?,?,?,?,?,?,?);";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$post_content_id,$post_by,$post_status,$post_title,$post_sayer,$post_source,$post_body]) or die('error set_post');
+        $_SESSION['message']='post has been Added';
+        $_SESSION['msg_type']='success';
+        header("Location: thread.php?id=".$_GET['id']);
+        exit();
+    }
     protected function set_comment($comment_body,$comment_by)
     {
         $sql = "INSERT INTO comments(comment_body, comment_by) VALUES(?,?);";

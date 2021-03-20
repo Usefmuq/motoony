@@ -62,6 +62,10 @@ if (isset($_POST['add_comment'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->add_comment();
 }
+if (isset($_POST['add_post'])) {
+    $post_contr = new ThreadContr();
+    $post_contr->add_post();
+}
 if (isset($_POST['reply_comment'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->reply_comment();

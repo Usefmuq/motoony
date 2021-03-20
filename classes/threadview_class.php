@@ -25,27 +25,27 @@ class ThreadView extends Thread {
         
       echo '
       <div id="comment-'.$comment['comment_id'].'">
-      <div class="card mx-4 shadow-sm" style="border: none;">
+      <div class="card shadow mb-2 bg-light rounded" style="border: none;">
           <a href="#comment-'.$comment['comment_id'].'" class="comment-border-link">
               <span class="sr-only">Jump to comment-'.$comment['comment_id'].'</span>
           </a>
-          <p class="mb-0" id="heading-'.$comment['comment_id'].'">
-              <button class="btn btn-link fa fa-minus" data-toggle="collapse" data-target="#collapse-'.$comment['comment_id'].'"
-                  aria-expanded="true" aria-controls="collapse-'.$comment['comment_id'].'"></button>
-                  <a href="user.php?id='.$comment['comment_by'].'">'.$comment['comment_by'].'</a>
-          </p>
-          <small class="mb-0 ml-5">
+          <p class="mb-2" id="heading-'.$comment['comment_id'].'">
+              <a role="button" data-toggle="collapse" data-target="#collapse-'.$comment['comment_id'].'"
+                  aria-expanded="true" aria-controls="collapse-'.$comment['comment_id'].'">[-]</a>
+                  <a href="user.php?id='.$comment['comment_by'].'">'.$comment['comment_by'].'</a> <small class="ml-5">
                   Date: '.$comment['comment_date'].'
           </small>
+
+          </p>
           <div id="collapse-'.$comment['comment_id'].'" class="collapse show" aria-labelledby="heading-'.$comment['comment_id'].'" data-parent="#comment-'.$comment['comment_id'].'">
-              <div class="card-body ml-5">
+              <div class="card-body ml-2">
               '.$comment['comment_body'].'  
                   <ul class="list-inline mt-2">
                       <li class="list-inline-item">
                           <i class="fa fa-chevron-up"></i>
                           <span class="badge badge-pill badge-secondary">18</span>
                           <i class="fa fa-chevron-down"></i>
-                            <button type="button" class="btn btn-success btn-sm rounded-0 mx-5" data-toggle="modal" data-target="#reply_comment-'.$comment['comment_id'].'">
+                            <button type="button" class="btn btn-info btn-sm rounded-0 mx-5" data-toggle="modal" data-target="#reply_comment-'.$comment['comment_id'].'">
                             <i class="fa fa-reply"> Reply</i>              
                             </button>
                             '.$this->reply_button($comment['comment_id'], $comment['comment_body']).'
@@ -159,16 +159,51 @@ class ThreadView extends Thread {
       foreach ($result as $row){
         echo'
         <div class="card mt-4">
-          <h3 class="card-header">'.$row['content_case'].'</h3>
+          <h3 class="card-header text-center">'.$row['content_case'].'</h3>
           <div class="card-body">
             <h5 class="card-title">'.$row['content_content'].'</h5>
             <hr>
               <p class="card-text">'.$row['content_case_description'].'.</p>
           </div>
         </div>
+        ';
+      }
+    }
+
+    public function show_posts()
+    {
+      // $result = $this->get_posts($_GET['id']); 
+      // foreach ($result as $row){
+        echo'
+        <div class="card mt-4">
+          <h3 class="card-header text-center">الشروح</h3>
+          <div class="card-body">
+
+
+            <div class="card mt-2 shadow p-3 mb-5 bg-light rounded">
+
+              <div id="module" class="container">
+                <h3>Bacon Ipsum</h3>
+                <p class="collapse" id="collapseExample" aria-expanded="false">
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                    Bacon ipsum dolor amet doner picanha tri-tip biltong leberkas salami meatball tongue filet mignon landjaeger tail. Kielbasa salami tenderloin picanha spare ribs, beef ribs strip steak jerky cow. Pork chop chicken ham hock beef ribs turkey jerky. Shoulder beef capicola doner, tongue tail sausage short ribs andouille. Rump frankfurter landjaeger t-bone, kielbasa doner ham hock shankle venison. Cupim capicola kielbasa t-bone, ball tip chicken andouille venison pork chop doner bacon beef ribs kevin shankle. Short loin leberkas tenderloin ground round shank, brisket strip steak ham hock ham.
+                </p>
+                <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                </a>
+              </div>
+
+            </div>
+          
+          </div>
+        </div>
         <hr>
         <h3 class="my-4">Comments:</h3>
         ';
-      }
+      // }
     }
 }

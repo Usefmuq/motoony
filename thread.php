@@ -8,7 +8,7 @@
         display: block;
         position: absolute;
         top: 30px;
-        left: 12px;
+        left: 2px;
         width: 12px;
         height: calc(100% - 50px);
         border-left: 4px solid transparent;
@@ -20,6 +20,28 @@
     .comment-border-link:hover {
         background-color: rgba(0, 0, 0, 0.3);
     }
+    #module {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    #module #collapseExample.collapse:not(.show) {
+        display: block;
+        height: 3rem;
+        overflow: hidden;
+    }
+
+    #module #collapseExample.collapsing {
+        height: 3rem;
+    }
+
+    #module a.collapsed:after {
+        content: '+ Show More';
+    }
+
+    #module a:not(.collapsed):after {
+        content: '- Show Less';
+    }
 </style>
 
 <div class="my-2 container">
@@ -28,10 +50,11 @@
     // error_message();
 ?>
 </div>
-<div class="my-4 mx-4 flued-container">
+<div class="my-4 container">
 <?php
 $threaded_comments = new ThreadView();
 $threaded_comments->show_case();
+$threaded_comments->show_posts();
 $threaded_comments->print_comments();
 $threaded_comments->add_button();
 

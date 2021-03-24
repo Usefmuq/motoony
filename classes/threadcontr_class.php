@@ -37,7 +37,7 @@ class ThreadContr extends Thread {
   public function add_comment()
   {
     if (isset($_SESSION['userid']) and isset($_POST['comment_body'])) {
-      $this->set_comment($_POST['comment_body'],$_POST['comment_by']);
+      $this->set_comment($_POST['comment_body'],$_POST['comment_by'],$_POST['comment_content_id']);
     }
   }
   public function add_post()
@@ -49,7 +49,28 @@ class ThreadContr extends Thread {
   public function reply_comment()
   {
     if (isset($_SESSION['userid']) and isset($_POST['comment_body'])) {
-      $this->set_reply_comment($_POST['comment_body'],$_POST['comment_by'],$_POST['comment_parent']);
+      $this->set_reply_comment($_POST['comment_body'],$_POST['comment_by'],$_POST['comment_parent'],$_POST['comment_content_id']);
+    }
+  }
+  public function vote_comment($vote_comment_id, $vote_status)
+  {
+    if (isset($_SESSION['userid'])){
+      switch ($vote_status) {
+        case 'like':
+          $this->like_comment($vote_comment_id, $_SESSION['userid']);
+          break;
+        case 'unlike':
+          $this->unlike_comment($vote_comment_id, $_SESSION['userid']);
+          break;
+        case 'dislike':
+          $this->dislike_comment($vote_comment_id, $_SESSION['userid']);
+          break;
+        case 'undislike':
+          $this->undislike_comment($vote_comment_id, $_SESSION['userid']);
+          break;
+        default:
+          break;
+      }
     }
   }
 

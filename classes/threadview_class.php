@@ -23,33 +23,44 @@ class ThreadView extends Thread {
 
   private function format_comment($comment, $depth)  
   {     
-        
+    $vote_status = $this->is_liked($comment['comment_id'],$_SESSION['userid']);
+    $comment_votes = $this->comment_votes($comment['comment_id']);
+    $votes_diff = $comment_votes['likes'] - $comment_votes['dislikes'];
       echo '
       <div id="comment-'.$comment['comment_id'].'">
       <div class="card shadow mb-2 bg-light rounded" style="border: none;">
           <a href="#comment-'.$comment['comment_id'].'" class="comment-border-link">
               <span class="sr-only">Jump to comment-'.$comment['comment_id'].'</span>
           </a>
-          <p class="mb-2" id="heading-'.$comment['comment_id'].'">
-              <a role="button" data-toggle="collapse" data-target="#collapse-'.$comment['comment_id'].'"
-                  aria-expanded="true" aria-controls="collapse-'.$comment['comment_id'].'">[-]</a>
-                  <a href="user.php?id='.$comment['comment_by'].'">'.$comment['comment_by'].'</a> <small class="ml-5">
-                  Date: '.$comment['comment_date'].'
-          </small>
-
-          </p>
+          <ul class="mb-2 list-inline" id="heading-'.$comment['comment_id'].'">
+            <li class="list-inline-item toggle_text">
+              <a role="button" data-toggle="collapse" data-target="#collapse-'.$comment['comment_id'].'"aria-expanded="true" aria-controls="collapse-'.$comment['comment_id'].'" class="toggle_text"></a>
+            </li>
+            <li class="list-inline-item">            
+              <a href="user.php?id='.$comment['comment_by'].'">'.$comment['comment_by'].'</a> 
+            </li>
+            <li class="list-inline-item">
+              <small class="ml-5">Date: '.$comment['comment_date'].'</small>
+            </li>
+          </ul>
           <div id="collapse-'.$comment['comment_id'].'" class="collapse show" aria-labelledby="heading-'.$comment['comment_id'].'" data-parent="#comment-'.$comment['comment_id'].'">
               <div class="card-body ml-2">
               '.$comment['comment_body'].'  
                   <ul class="list-inline mt-2">
                       <li class="list-inline-item">
-                          <i class="fa fa-chevron-up"></i>
-                          <span class="badge badge-pill badge-secondary">18</span>
-                          <i class="fa fa-chevron-down"></i>
+                          <i class="';
+                          if ($vote_status == 'like'){echo 'fa fa-thumbs-up';} else{echo 'fa fa-thumbs-o-up';}
+                          echo ' like-btn text-success" data-id="'.$comment['comment_id'].'"></i>
+                          <span class="badge badge-pill badge-warning">'.$votes_diff.'</span>
+                          <i class="';
+                          if ($vote_status == 'dislike'){echo 'fa fa-thumbs-down';} else{echo 'fa fa-thumbs-o-down';}
+                          echo ' dislike-btn text-danger" data-id="'.$comment['comment_id'].'"></i>
                             <button type="button" class="btn btn-info btn-sm rounded-0 mx-5" data-toggle="modal" data-target="#reply_comment-'.$comment['comment_id'].'">
                             <i class="fa fa-reply"> Reply</i>              
                             </button>
-                            '.$this->reply_button($comment['comment_id'], $comment['comment_body']).'
+                            ';
+                            $this->reply_button($comment['comment_id'], $comment['comment_body']);
+                          echo '
                           <i class="fa fa-star mx-4"> Favorite</i>
                       </li>
                   </ul>
@@ -114,7 +125,7 @@ class ThreadView extends Thread {
       </div>';
   }  
 
-  public function add_button()
+  public function add_comment()
   {  
       echo '
       <button type="button" class="btn btn-success btn-sm rounded-0" data-toggle="modal" data-target="#add_comment">

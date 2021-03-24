@@ -27,12 +27,12 @@
 
     #module #collapseExample.collapse:not(.show) {
         display: block;
-        height: 3rem;
+        height: 7rem;
         overflow: hidden;
     }
 
     #module #collapseExample.collapsing {
-        height: 3rem;
+        height: 7rem;
     }
 
     #module a.collapsed:after {
@@ -41,6 +41,28 @@
 
     #module a:not(.collapsed):after {
         content: '- Show Less';
+    }
+    .toggle_text a.collapsed:after {
+        content: '[+]';
+    }
+
+    .toggle_text a:not(.collapsed):after {
+        content: '[-]';
+    }
+    .badge {
+        font-size: 14px;
+    }
+    .like-btn {
+        font-size: 20px;
+    }
+    .dislike-btn {
+        font-size: 20px;
+    }
+    .like-btn:hover {
+        text-shadow: 1px 2px 4px #00FF00;
+    }
+    .dislike-btn:hover {
+        text-shadow: 1px 2px 4px #FF0000;
     }
 </style>
 
@@ -56,7 +78,7 @@ $threaded_comments = new ThreadView();
 $threaded_comments->show_case();
 $threaded_comments->show_posts();
 $threaded_comments->print_comments();
-$threaded_comments->add_button();
+$threaded_comments->add_comment();
 
 if (isset($_POST['add_comment'])) {
     $comment_contr = new ThreadContr();
@@ -70,6 +92,10 @@ if (isset($_POST['reply_comment'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->reply_comment();
 }
+if (isset($_POST['vote_status'])) {
+    $comment_contr = new ThreadContr();
+    $comment_contr->vote_comment($_POST['vote_comment_id'], $_POST['vote_status']);
+}
 ?>
 </div>
 
@@ -77,17 +103,87 @@ if (isset($_POST['reply_comment'])) {
 <?php
     include 'footer.php';
 ?>
-<!-- <script type="text/javascript">
-document.addEventListener(
-    "click",
-    function(event) {
-        var target = event.target;
-        var replyForm;
-        if (target.matches("[data-toggle='reply-form']")) {
-            replyForm = document.getElementById(target.getAttribute("data-target"));
-            replyForm.classList.toggle("d-none");
+<script type="text/javascript">
+$(document).ready(function(){
+    // if like btn clicked post it and change btn class
+    $('.like-btn').on('click', function(){
+        var vote_comment_id = $(this).data('id');
+        $clicked_btn = $(this);
+        if ($clicked_btn.hasClass('fa fa-thumbs-o-up')) {
+            vote_status = 'like';
+        }         
+        else if ($clicked_btn.hasClass('fa fa-thumbs-up')) {
+            vote_status = 'unlike';
         }
-    },
-    false
-);
-</script> -->
+        $.ajax({
+            url: '' ,
+            type: 'POST',
+            data: {
+                'vote_status': vote_status,
+                'vote_comment_id': vote_comment_id
+            },
+            datatype: 'JSON',
+            success: function(data) {
+                // res = JSON.parse(data);
+                if (vote_status == 'like'){
+                    $clicked_btn.removeClass('fa fa-thumbs-o-up')
+                    $clicked_btn.addClass('fa fa-thumbs-up')
+                }
+                else if (vote_status == 'unlike'){
+                    $clicked_btn.removeClass('fa fa-thumbs-up')
+                    $clicked_btn.addClass('fa fa-thumbs-o-up')
+                }
+                $clicked_btn.siblings('i.fa-thumbs-down').removeClass('fa-thumbs-down').addClass('fa-thumbs-o-down');
+            }
+        });
+
+    });
+
+    // if dislike btn clicked post it and change btn class
+    $('.dislike-btn').on('click', function(){
+        var vote_comment_id = $(this).data('id');
+        $clicked_btn = $(this);
+        if ($clicked_btn.hasClass('fa fa-thumbs-o-down')) {
+            vote_status = 'dislike';
+        }         
+        else if ($clicked_btn.hasClass('fa fa-thumbs-down')) {
+            vote_status = 'undislike';
+        }
+        $.ajax({
+            url: '' ,
+            type: 'POST',
+            data: {
+                'vote_status': vote_status,
+                'vote_comment_id': vote_comment_id
+            },
+            datatype: 'JSON',
+            success: function(data) {
+                // res = JSON.parse(data);
+                if (vote_status == 'dislike'){
+                    $clicked_btn.removeClass('fa fa-thumbs-o-down')
+                    $clicked_btn.addClass('fa fa-thumbs-down')
+                }
+                else if (vote_status == 'undislike'){
+                    $clicked_btn.removeClass('fa fa-thumbs-down')
+                    $clicked_btn.addClass('fa fa-thumbs-o-down')
+                }
+                $clicked_btn.siblings('i.fa-thumbs-up').removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+            }
+        });
+
+    });
+
+});
+// document.addEventListener(
+//     "click",
+//     function(event) {
+//         var target = event.target;
+//         var replyForm;
+//         if (target.matches("[data-toggle='reply-form']")) {
+//             replyForm = document.getElementById(target.getAttribute("data-target"));
+//             replyForm.classList.toggle("d-none");
+//         }
+//     },
+//     false
+// );
+</script>

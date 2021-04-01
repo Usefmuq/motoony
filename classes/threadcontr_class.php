@@ -73,6 +73,27 @@ class ThreadContr extends Thread {
       }
     }
   }
+  public function vote_post($vote_post_id, $vote_status)
+  {
+    if (isset($_SESSION['userid'])){
+      switch ($vote_status) {
+        case 'like':
+          $this->like_post($vote_post_id, $_SESSION['userid']);
+          break;
+        case 'unlike':
+          $this->unlike_post($vote_post_id, $_SESSION['userid']);
+          break;
+        case 'dislike':
+          $this->dislike_post($vote_post_id, $_SESSION['userid']);
+          break;
+        case 'undislike':
+          $this->undislike_post($vote_post_id, $_SESSION['userid']);
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
 
 }

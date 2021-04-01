@@ -52,16 +52,22 @@
     .badge {
         font-size: 14px;
     }
-    .like-btn {
+    .fa-thumbs-up {
+        font-size: 19px;
+    }
+    .fa-thumbs-down {
+        font-size: 19px;
+    }
+    .fa-thumbs-o-up {
         font-size: 20px;
     }
-    .dislike-btn {
+    .fa-thumbs-o-down {
         font-size: 20px;
     }
-    .like-btn:hover {
+    .comment-like-btn:hover {
         text-shadow: 1px 2px 4px #00FF00;
     }
-    .dislike-btn:hover {
+    .comment-dislike-btn:hover {
         text-shadow: 1px 2px 4px #FF0000;
     }
 </style>
@@ -92,9 +98,13 @@ if (isset($_POST['reply_comment'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->reply_comment();
 }
-if (isset($_POST['vote_status'])) {
+if (isset($_POST['vote_comment_id'])) {
     $comment_contr = new ThreadContr();
     $comment_contr->vote_comment($_POST['vote_comment_id'], $_POST['vote_status']);
+}
+if (isset($_POST['vote_post_id'])) {
+    $post_contr = new ThreadContr();
+    $post_contr->vote_post($_POST['vote_post_id'], $_POST['vote_status']);
 }
 ?>
 </div>
@@ -105,73 +115,193 @@ if (isset($_POST['vote_status'])) {
 ?>
 <script type="text/javascript">
 $(document).ready(function(){
+    var flag = 1;
+    
+    // ===============  START comment like & dislike  ===============
     // if like btn clicked post it and change btn class
-    $('.like-btn').on('click', function(){
-        var vote_comment_id = $(this).data('id');
-        $clicked_btn = $(this);
-        if ($clicked_btn.hasClass('fa fa-thumbs-o-up')) {
-            vote_status = 'like';
-        }         
-        else if ($clicked_btn.hasClass('fa fa-thumbs-up')) {
-            vote_status = 'unlike';
-        }
-        $.ajax({
-            url: '' ,
-            type: 'POST',
-            data: {
-                'vote_status': vote_status,
-                'vote_comment_id': vote_comment_id
-            },
-            datatype: 'JSON',
-            success: function(data) {
-                // res = JSON.parse(data);
-                if (vote_status == 'like'){
-                    $clicked_btn.removeClass('fa fa-thumbs-o-up')
-                    $clicked_btn.addClass('fa fa-thumbs-up')
-                }
-                else if (vote_status == 'unlike'){
-                    $clicked_btn.removeClass('fa fa-thumbs-up')
-                    $clicked_btn.addClass('fa fa-thumbs-o-up')
-                }
-                $clicked_btn.siblings('i.fa-thumbs-down').removeClass('fa-thumbs-down').addClass('fa-thumbs-o-down');
+    $('.comment-like-btn').on('click', function(){
+        if (flag == 1){
+            flag = 0;
+            var vote_comment_id = $(this).data('id');
+            $clicked_btn = $(this);
+            if ($clicked_btn.hasClass('fa fa-thumbs-o-up')) {
+                vote_status = 'like';
+            }         
+            else if ($clicked_btn.hasClass('fa fa-thumbs-up')) {
+                vote_status = 'unlike';
             }
-        });
+            $.ajax({
+                url: '' ,
+                type: 'POST',
+                data: {
+                    'vote_status': vote_status,
+                    'vote_comment_id': vote_comment_id
+                },
+                datatype: 'JSON',
+                success: function(data) {
+                    if (vote_status == 'like'){
+                        $clicked_btn.removeClass('fa fa-thumbs-o-up')
+                        $clicked_btn.addClass('fa fa-thumbs-up')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(++votes);
+                        if ($clicked_btn.siblings("i.fa-thumbs-down").hasClass('fa fa-thumbs-down')) {
+                            $clicked_btn.siblings('span.badge').text(++votes);
+                        }
+                    }
+                    else if (vote_status == 'unlike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-up')
+                        $clicked_btn.addClass('fa fa-thumbs-o-up')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(--votes);
+                    }
+                    $clicked_btn.siblings('i.fa-thumbs-down').removeClass('fa fa-thumbs-down').addClass('fa fa-thumbs-o-down');
+                },
+                complete: function() {
+                    flag = 1;
+                }
+            });
+        }
 
     });
-
     // if dislike btn clicked post it and change btn class
-    $('.dislike-btn').on('click', function(){
-        var vote_comment_id = $(this).data('id');
-        $clicked_btn = $(this);
-        if ($clicked_btn.hasClass('fa fa-thumbs-o-down')) {
-            vote_status = 'dislike';
-        }         
-        else if ($clicked_btn.hasClass('fa fa-thumbs-down')) {
-            vote_status = 'undislike';
-        }
-        $.ajax({
-            url: '' ,
-            type: 'POST',
-            data: {
-                'vote_status': vote_status,
-                'vote_comment_id': vote_comment_id
-            },
-            datatype: 'JSON',
-            success: function(data) {
-                // res = JSON.parse(data);
-                if (vote_status == 'dislike'){
-                    $clicked_btn.removeClass('fa fa-thumbs-o-down')
-                    $clicked_btn.addClass('fa fa-thumbs-down')
-                }
-                else if (vote_status == 'undislike'){
-                    $clicked_btn.removeClass('fa fa-thumbs-down')
-                    $clicked_btn.addClass('fa fa-thumbs-o-down')
-                }
-                $clicked_btn.siblings('i.fa-thumbs-up').removeClass('fa-thumbs-up').addClass('fa-thumbs-o-up');
+    $('.comment-dislike-btn').on('click', function(){
+        if (flag == 1){
+            flag = 0;
+            var vote_comment_id = $(this).data('id');
+            $clicked_btn = $(this);
+            if ($clicked_btn.hasClass('fa fa-thumbs-o-down')) {
+                vote_status = 'dislike';
             }
-        });
+            else if ($clicked_btn.hasClass('fa fa-thumbs-down')) {
+                vote_status = 'undislike';
+            }
+            $.ajax({
+                url: '' ,
+                type: 'POST',
+                data: {
+                    'vote_status': vote_status,
+                    'vote_comment_id': vote_comment_id
+                },
+                datatype: 'JSON',
+                success: function(data) {
+                    if (vote_status == 'dislike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-o-down')
+                        $clicked_btn.addClass('fa fa-thumbs-down')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(--votes);
+                        if ($clicked_btn.siblings("i.fa-thumbs-up").hasClass('fa fa-thumbs-up')) {
+                            $clicked_btn.siblings('span.badge').text(--votes);
+                        }
+                    }
+                    else if (vote_status == 'undislike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-down')
+                        $clicked_btn.addClass('fa fa-thumbs-o-down')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(++votes);
+                    }
+                    $clicked_btn.siblings('i.fa-thumbs-up').removeClass('fa fa-thumbs-up').addClass('fa fa-thumbs-o-up');
+                },
+                complete: function() {
+                    flag = 1;
+                }
+            });
+        }
+    });
+    // ===============  END comment like & dislike  ===============
+
+
+    // ===============  START post like & dislike  ===============
+    // if like btn clicked post it and change btn class
+    $('.post-like-btn').on('click', function(){
+        if (flag == 1){
+            flag = 0;
+            var vote_post_id = $(this).data('id');
+            $clicked_btn = $(this);
+            if ($clicked_btn.hasClass('fa fa-thumbs-o-up')) {
+                vote_status = 'like';
+            }         
+            else if ($clicked_btn.hasClass('fa fa-thumbs-up')) {
+                vote_status = 'unlike';
+            }
+            $.ajax({
+                url: '' ,
+                type: 'POST',
+                data: {
+                    'vote_status': vote_status,
+                    'vote_post_id': vote_post_id
+                },
+                datatype: 'JSON',
+                success: function(data) {
+                    if (vote_status == 'like'){
+                        $clicked_btn.removeClass('fa fa-thumbs-o-up')
+                        $clicked_btn.addClass('fa fa-thumbs-up')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(++votes);
+                        if ($clicked_btn.siblings("i.fa-thumbs-down").hasClass('fa fa-thumbs-down')) {
+                            $clicked_btn.siblings('span.badge').text(++votes);
+                        }
+                    }
+                    else if (vote_status == 'unlike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-up')
+                        $clicked_btn.addClass('fa fa-thumbs-o-up')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(--votes);
+                    }
+                    $clicked_btn.siblings('i.fa-thumbs-down').removeClass('fa fa-thumbs-down').addClass('fa fa-thumbs-o-down');
+                },
+                complete: function() {
+                    flag = 1;
+                }
+            });
+        }
 
     });
+    // if dislike btn clicked post it and change btn class
+    $('.post-dislike-btn').on('click', function(){
+        if (flag == 1){
+            flag = 0;
+            var vote_post_id = $(this).data('id');
+            $clicked_btn = $(this);
+            if ($clicked_btn.hasClass('fa fa-thumbs-o-down')) {
+                vote_status = 'dislike';
+            }
+            else if ($clicked_btn.hasClass('fa fa-thumbs-down')) {
+                vote_status = 'undislike';
+            }
+            $.ajax({
+                url: '' ,
+                type: 'POST',
+                data: {
+                    'vote_status': vote_status,
+                    'vote_post_id': vote_post_id
+                },
+                datatype: 'JSON',
+                success: function(data) {
+                    if (vote_status == 'dislike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-o-down')
+                        $clicked_btn.addClass('fa fa-thumbs-down')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(--votes);
+                        if ($clicked_btn.siblings("i.fa-thumbs-up").hasClass('fa fa-thumbs-up')) {
+                            $clicked_btn.siblings('span.badge').text(--votes);
+                        }
+                    }
+                    else if (vote_status == 'undislike'){
+                        $clicked_btn.removeClass('fa fa-thumbs-down')
+                        $clicked_btn.addClass('fa fa-thumbs-o-down')
+                        votes = $clicked_btn.siblings('span.badge').text();
+                        $clicked_btn.siblings('span.badge').text(++votes);
+                    }
+                    $clicked_btn.siblings('i.fa-thumbs-up').removeClass('fa fa-thumbs-up').addClass('fa fa-thumbs-o-up');
+                },
+                complete: function() {
+                    flag = 1;
+                }
+            });
+        }
+    });
+    // ===============  END post like & dislike  ===============
+
 
 });
 // document.addEventListener(

@@ -23,7 +23,7 @@ class ThreadView extends Thread {
 
   private function format_comment($comment, $depth)  
   {     
-    $vote_status = $this->is_liked($comment['comment_id'],$_SESSION['userid']);
+    $vote_status = $this->comment_is_liked($comment['comment_id'],$_SESSION['userid']);
     $comment_votes = $this->comment_votes($comment['comment_id']);
     $votes_diff = $comment_votes['likes'] - $comment_votes['dislikes'];
       echo '
@@ -50,11 +50,11 @@ class ThreadView extends Thread {
                       <li class="list-inline-item">
                           <i class="';
                           if ($vote_status == 'like'){echo 'fa fa-thumbs-up';} else{echo 'fa fa-thumbs-o-up';}
-                          echo ' like-btn text-success" data-id="'.$comment['comment_id'].'"></i>
+                          echo ' comment-like-btn text-success" data-id="'.$comment['comment_id'].'"></i>
                           <span class="badge badge-pill badge-warning">'.$votes_diff.'</span>
                           <i class="';
                           if ($vote_status == 'dislike'){echo 'fa fa-thumbs-down';} else{echo 'fa fa-thumbs-o-down';}
-                          echo ' dislike-btn text-danger" data-id="'.$comment['comment_id'].'"></i>
+                          echo ' comment-dislike-btn text-danger" data-id="'.$comment['comment_id'].'"></i>
                             <button type="button" class="btn btn-info btn-sm rounded-0 mx-5" data-toggle="modal" data-target="#reply_comment-'.$comment['comment_id'].'">
                             <i class="fa fa-reply"> Reply</i>              
                             </button>
@@ -65,11 +65,6 @@ class ThreadView extends Thread {
                       </li>
                   </ul>
                   <hr>';
-    // if ($depth > 0)
-    // {  
-    //     echo "</div></div></div></div>";
-    // }  
-            
   }  
 
   private function print_parent($comment, $depth = 0)
@@ -227,20 +222,35 @@ class ThreadView extends Thread {
           <div class="card-body">';
           $this->add_post();
           // loop throw posts then show them with read more/less
-          $result = $this->get_posts($_GET['id']); 
-          foreach ($result as $row){
+          $posts = $this->get_posts($_GET['id']); 
+          foreach ($posts as $post){
+            $vote_status = $this->post_is_liked($post['post_id'],$_SESSION['userid']);
+            $post_votes = $this->post_votes($post['post_id']);
+            $votes_diff = $post_votes['likes'] - $post_votes['dislikes'];        
             echo' 
             <div class="card mt-2 shadow p-3 mb-5 bg-light rounded">
 
               <div id="module" class="container">
-                <h3>'.$row['post_title'].'</h3>
-                <small>'.$row['post_date'].'</small>
+                <h3>'.$post['post_title'].'</h3>
+                <ul class="list-inline mt-2">
+                  <li class="list-inline-item">
+                      <i class="';
+                      if ($vote_status == 'like'){echo 'fa fa-thumbs-up';} else{echo 'fa fa-thumbs-o-up';}
+                      echo ' post-like-btn text-success" data-id="'.$post['post_id'].'"></i>
+                      <span class="badge badge-pill badge-warning">'.$votes_diff.'</span>
+                      <i class="';
+                      if ($vote_status == 'dislike'){echo 'fa fa-thumbs-down';} else{echo 'fa fa-thumbs-o-down';}
+                      echo ' post-dislike-btn text-danger" data-id="'.$post['post_id'].'"></i>
+                  </li>
+                </ul>
+
+                <small>'.$post['post_date'].'</small>
                 <br>
-                <small>Author: '.$row['post_by'].'</small>
+                <small>Author: '.$post['post_by'].'</small>
                 <br>
-                <small class:"mx-4">source: '.$row['post_source'].'</small>
+                <small class:"mx-4">source: '.$post['post_source'].'</small>
                 <hr>
-                <p class="collapse" id="collapseExample" aria-expanded="false">'.$row['post_body'].'</p>
+                <p class="collapse" id="collapseExample" aria-expanded="false">'.$post['post_body'].'</p>
                 <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                 </a>
               </div>

@@ -7,11 +7,22 @@ class Thread extends Dbh {
         $stmt->execute([$content_id]);
         return $stmt->fetchAll();
     }
-    protected function is_liked($vote_comment_id ,$vote_by)
+    protected function comment_is_liked($vote_comment_id ,$vote_by)
     {
         $sql = "SELECT * FROM votes_comments WHERE vote_comment_id=? AND vote_by=?;";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$vote_comment_id, $vote_by]);
+        $result = $stmt->fetch();
+        if ($result){
+            return $result['vote_status'];
+        }
+        return FALSE;
+    }
+    protected function post_is_liked($vote_post_id ,$vote_by)
+    {
+        $sql = "SELECT * FROM votes_posts WHERE vote_post_id=? AND vote_by=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id, $vote_by]);
         $result = $stmt->fetch();
         if ($result){
             return $result['vote_status'];
@@ -84,7 +95,7 @@ class Thread extends Dbh {
     }
     protected function like_comment($vote_comment_id, $vote_by)
     {
-        if ($this->is_liked($vote_comment_id ,$vote_by)){
+        if ($this->comment_is_liked($vote_comment_id ,$vote_by)){
             $this->undislike_comment($vote_comment_id ,$vote_by);
         }
         $sql = "INSERT INTO votes_comments(vote_comment_id, vote_by, vote_status) VALUES(?,?,'like');";
@@ -93,7 +104,7 @@ class Thread extends Dbh {
     }
     protected function dislike_comment($vote_comment_id, $vote_by)
     {
-        if ($this->is_liked($vote_comment_id ,$vote_by)){
+        if ($this->comment_is_liked($vote_comment_id ,$vote_by)){
             $this->unlike_comment($vote_comment_id ,$vote_by);
         }
         $sql = "INSERT INTO votes_comments(vote_comment_id, vote_by, vote_status) VALUES(?,?,'dislike');";
@@ -119,6 +130,46 @@ class Thread extends Dbh {
                 FROM votes_comments WHERE vote_comment_id=?";
         $stmt = $this->connect()->prepare($sql);
         $stmt->execute([$vote_comment_id]);
+        $result = $stmt->fetch();
+        return $result;
+    }
+    protected function like_post($vote_post_id, $vote_by)
+    {
+        if ($this->post_is_liked($vote_post_id ,$vote_by)){
+            $this->undislike_post($vote_post_id ,$vote_by);
+        }
+        $sql = "INSERT INTO votes_posts(vote_post_id, vote_by, vote_status) VALUES(?,?,'like');";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id,$vote_by]) or die('error like');
+    }
+    protected function dislike_post($vote_post_id, $vote_by)
+    {
+        if ($this->post_is_liked($vote_post_id ,$vote_by)){
+            $this->unlike_post($vote_post_id ,$vote_by);
+        }
+        $sql = "INSERT INTO votes_posts(vote_post_id, vote_by, vote_status) VALUES(?,?,'dislike');";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id,$vote_by]) or die('error like');
+    }
+    protected function unlike_post($vote_post_id, $vote_by)
+    {
+        $sql = "DELETE FROM votes_posts WHERE vote_post_id=? AND vote_by=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id,$vote_by]) or die('error like');
+    }
+    protected function undislike_post($vote_post_id, $vote_by)
+    {
+        $sql = "DELETE FROM votes_posts WHERE vote_post_id=? AND vote_by=?;";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id,$vote_by]) or die('error like');
+    }
+    protected function post_votes($vote_post_id)
+    {
+        $sql = "SELECT COUNT(DISTINCT CASE WHEN vote_status = 'like' THEN vote_by END) likes,
+                COUNT(DISTINCT CASE WHEN vote_status = 'dislike' THEN vote_by END) dislikes
+                FROM votes_posts WHERE vote_post_id=?";
+        $stmt = $this->connect()->prepare($sql);
+        $stmt->execute([$vote_post_id]);
         $result = $stmt->fetch();
         return $result;
     }

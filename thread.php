@@ -20,18 +20,18 @@
     .comment-border-link:hover {
         background-color: rgba(0, 0, 0, 0.3);
     }
-    #module {
+    #post {
         font-size: 1rem;
         line-height: 1.5;
     }
 
-    #module #collapseExample.collapse:not(.show) {
+    #module .collapse:not(.show) {
         display: block;
         height: 7rem;
         overflow: hidden;
     }
 
-    #module #collapseExample.collapsing {
+    #module .collapsing {
         height: 7rem;
     }
 
@@ -116,7 +116,10 @@ if (isset($_POST['vote_post_id'])) {
 <script type="text/javascript">
 $(document).ready(function(){
     var flag = 1;
-    
+    CKEDITOR.replace( 'post_body' );
+    // var textarea = document.body.appendChild( document.createElement( 'textarea' ) );
+    // CKEDITOR.replace( textarea );
+
     // ===============  START comment like & dislike  ===============
     // if like btn clicked post it and change btn class
     $('.comment-like-btn').on('click', function(){
@@ -304,16 +307,4 @@ $(document).ready(function(){
 
 
 });
-// document.addEventListener(
-//     "click",
-//     function(event) {
-//         var target = event.target;
-//         var replyForm;
-//         if (target.matches("[data-toggle='reply-form']")) {
-//             replyForm = document.getElementById(target.getAttribute("data-target"));
-//             replyForm.classList.toggle("d-none");
-//         }
-//     },
-//     false
-// );
 </script>

@@ -174,8 +174,8 @@ class ThreadView extends Thread {
               <input type="text" class="form-control mb-2 mr-sm-2" name="post_title" placeholder="post title...">
               <input type="text" class="form-control mb-2 mr-sm-2" name="post_sayer" placeholder="post sayer...">
               <input type="text" class="form-control mb-2 mr-sm-2" name="post_source" placeholder="post source...">
-              <textarea class="form-control mb-2 mr-sm-2" name="post_body" rows="4" placeholder="post body..."></textarea>
-            </div>
+              <textarea name="post_body" id="editor1" rows="10" cols="80"></textarea>
+          </div>
             <div class="modal-footer">
               <button type="submit" class="btn btn-primary" name= "add_post">ADD post</button>
               </form>
@@ -250,16 +250,16 @@ class ThreadView extends Thread {
                 <br>
                 <small class:"mx-4">source: '.$post['post_source'].'</small>
                 <hr>
-                <p class="collapse" id="collapseExample" aria-expanded="false">'.$post['post_body'].'</p>
-                <a role="button" class="collapsed" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                <div class="collapse" id="collapsePost-'.$post['post_id'].'" aria-expanded="false">'.$post['post_body'].'</div>
+                <a role="button" class="collapsed" data-toggle="collapse" href="#collapsePost-'.$post['post_id'].'" aria-expanded="false" aria-controls="collapsePost-'.$post['post_id'].'">
                 </a>
               </div>
 
-            </div>
-          
-          </div>
+            </div>';
+          }
+        echo'
+        </div>
         </div>
         ';
-      }
     }
 }

@@ -21,6 +21,9 @@
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
+    <!-- ckeditor textarea editor -->
+    <script src="js/ckeditor/ckeditor.js"></script>
+
 
 </head>
 

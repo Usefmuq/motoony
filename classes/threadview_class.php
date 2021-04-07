@@ -230,14 +230,14 @@ class ThreadView extends Thread {
             echo' 
             <div class="card mt-2 shadow p-3 mb-5 bg-light rounded">
 
-              <div id="module" class="container">
+              <div id="post-module" class="container">
                 <h3>'.$post['post_title'].'</h3>
                 <ul class="list-inline mt-2">
                   <li class="list-inline-item">
                       <i class="';
                       if ($vote_status == 'like'){echo 'fa fa-thumbs-up';} else{echo 'fa fa-thumbs-o-up';}
                       echo ' post-like-btn text-success" data-id="'.$post['post_id'].'"></i>
-                      <span class="badge badge-pill badge-warning">'.$votes_diff.'</span>
+                      <span class="badge badge-pill ">'.$votes_diff.'</span>
                       <i class="';
                       if ($vote_status == 'dislike'){echo 'fa fa-thumbs-down';} else{echo 'fa fa-thumbs-o-down';}
                       echo ' post-dislike-btn text-danger" data-id="'.$post['post_id'].'"></i>
@@ -250,7 +250,7 @@ class ThreadView extends Thread {
                 <br>
                 <small class:"mx-4">source: '.$post['post_source'].'</small>
                 <hr>
-                <div class="collapse" id="collapsePost-'.$post['post_id'].'" aria-expanded="false">'.$post['post_body'].'</div>
+                <div class="collapse post-collapse" id="collapsePost-'.$post['post_id'].'" aria-expanded="false"><p>'.$post['post_body'].'</p></div>
                 <a role="button" class="collapsed" data-toggle="collapse" href="#collapsePost-'.$post['post_id'].'" aria-expanded="false" aria-controls="collapsePost-'.$post['post_id'].'">
                 </a>
               </div>

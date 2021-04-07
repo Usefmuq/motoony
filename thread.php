@@ -8,7 +8,7 @@
         display: block;
         position: absolute;
         top: 30px;
-        left: 2px;
+        right: 2px;
         width: 12px;
         height: calc(100% - 50px);
         border-left: 4px solid transparent;
@@ -20,26 +20,26 @@
     .comment-border-link:hover {
         background-color: rgba(0, 0, 0, 0.3);
     }
-    #post {
+    #post-module {
         font-size: 1rem;
         line-height: 1.5;
     }
 
-    #module .collapse:not(.show) {
+    #post-module .post-collapse.collapse:not(.show) {
         display: block;
         height: 7rem;
         overflow: hidden;
     }
 
-    #module .collapsing {
+    #post-module .post-collapse.collapsing {
         height: 7rem;
     }
 
-    #module a.collapsed:after {
+    #post-module a.collapsed:after {
         content: '+ Show More';
     }
 
-    #module a:not(.collapsed):after {
+    #post-module a:not(.collapsed):after {
         content: '- Show Less';
     }
     .toggle_text a.collapsed:after {
@@ -51,12 +51,15 @@
     }
     .badge {
         font-size: 14px;
+        background: Silver;
+        min-width: 50px;
+        opacity: 0.7;
     }
     .fa-thumbs-up {
-        font-size: 19px;
+        font-size: 20px;
     }
     .fa-thumbs-down {
-        font-size: 19px;
+        font-size: 20px;
     }
     .fa-thumbs-o-up {
         font-size: 20px;
@@ -68,6 +71,12 @@
         text-shadow: 1px 2px 4px #00FF00;
     }
     .comment-dislike-btn:hover {
+        text-shadow: 1px 2px 4px #FF0000;
+    }
+    .post-like-btn:hover {
+        text-shadow: 1px 2px 4px #00FF00;
+    }
+    .post-dislike-btn:hover {
         text-shadow: 1px 2px 4px #FF0000;
     }
 </style>
